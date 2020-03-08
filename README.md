@@ -1,24 +1,27 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+郵便番号CSV http://www.post.japanpost.jp/zipcode/dl/kogaki/zip/ken_all.zip より、都道府県, 市区町村, 町域の日本語検索を行うプログラム
 
-Things you may want to cover:
 
-* Ruby version
+## 使用方法
 
-* System dependencies
+rake(rails) taskを実行してください。第一引数が検索キーワードになります
 
-* Configuration
+### 実行例
+```
+bundle exec rails searcher:execute["本木東町"]
+```
+### 出力例
+```
+"1230854","東京都","足立区","本木東町"
+```
 
-* Database creation
 
-* Database initialization
+初回検索時に読み込みを行うため、複数回実行する場合はrails consoleから呼び出す事で高速に実行できます
+```
+bundle exec rails console
 
-* How to run the test suite
+Searcher::SearchResult.preload
+Searcher::SearchResult.find_by_keyword("本木東町")
+```
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
