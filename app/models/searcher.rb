@@ -130,18 +130,11 @@ module Searcher
         search_results = []
         [:zipcode_7, :prefectures, :city_name, :town_area].each do |field_name|
           if keyword.length >= 2
-            #search_results.push(
-            #    ngram_keywords
-            #        .map {|ngram_keyword| SearchResult.search_index_by_ngram_keywords[field_name][ngram_keyword] || [] } # n-gram化したキーワードの一部に合致したら該当とみなす
-            #        .flatten)
+            rch_results.push(
+                ngram_keywords
+                    .map {|ngram_keyword| SearchResult.search_index_by_ngram_keywords[field_name][ngram_keyword] || [] } # n-gram化したキーワードの一部に合致したら該当とみなす
+                    .flatten)
 
-            # keyword完全一致Ver
-            search_results.push(
-              (ngram_keywords
-                .map {|ngram_keyword| SearchResult.search_index_by_ngram_keywords[field_name][ngram_keyword] || [] } # n-gram化したキーワードの一部に合致したら該当とみなす
-                .inject(nil){|prev, curr| prev == nil ? curr : curr != nil ? prev & curr : [] } || [])  # キーワードとの完全一致判定の前処理。n-gram形式に変換したキーワードに全て合致する事を担保(ただし、この時点では一致箇所とその順番は保証しない)
-                .select{|e| records[e][field_name].include?(keyword)} # indexで候補を絞った後、キーワードの完全一致判定
-                .flatten)
           else
             # キーワードの長さがn-gramのnを下回るケース
             search_results.push(
